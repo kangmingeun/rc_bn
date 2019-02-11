@@ -87,7 +87,7 @@ func init_wallet(stub shim.ChaincodeStubInterface, args []string) peer.Response 
         var newWallet Wallet
 
 	if len(args) != 3 {
-                return shim.Error("Incorrect number of arguments. Expecting 2")
+                return shim.Error("Incorrect number of arguments. Expecting 3")
         }
 
 	newWallet.Balance = 0

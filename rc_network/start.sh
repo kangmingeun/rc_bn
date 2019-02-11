@@ -28,12 +28,13 @@ docker exec -e "CORE_PEER_LOCALMSPID=Org1MSP" -e "CORE_PEER_MSPCONFIGPATH=/etc/h
 # Join peer0.org2.rgbproject.com to the channel.
 docker exec -e "CORE_PEER_LOCALMSPID=Org2MSP" -e "CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/msp/users/Admin@org2.rgbproject.com/msp" peer0.org2.rgbproject.com peer channel fetch 0 channelrc.block -o orderer.rgbproject.com:7050 -c channelrc
 docker exec -e "CORE_PEER_LOCALMSPID=Org2MSP" -e "CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/msp/users/Admin@org2.rgbproject.com/msp" peer0.org2.rgbproject.com peer channel join -b channelrc.block
+
 # Install chaincode into peer0.org1.rgbproject.com
 docker exec -e "CORE_PEER_LOCALMSPID=Org1MSP" -e "CORE_PEER_ADDRESS=peer0.org1.rgbproject.com:7051" -e "CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.rgbproject.com/users/Admin@org1.rgbproject.com/msp" cli peer chaincode install -n rc_cc -v 1.0 -p github.com/rc_chaincode 
 # Install chaincode into peer0.org2.rgbproject.com
 docker exec -e "CORE_PEER_LOCALMSPID=Org2MSP" -e "CORE_PEER_ADDRESS=peer0.org2.rgbproject.com:7051" -e "CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org2.rgbproject.com/users/Admin@org2.rgbproject.com/msp" cli peer chaincode install -n rc_cc -v 1.0 -p github.com/rc_chaincode
 # Instanticate chaincode
-docker exec -e "CORE_PEER_LOCALMSPID=Org1MSP" -e "CORE_PEER_ADDRESS=peer0.org1.rgbproject.com:7051" -e "CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/msp/users/Admin@org1.rgbproject.com/msp" peer0.org1.rgbproject.com peer chaincode instantiate -o orderer.rgbproject.com:7050 -C channelrc -n rc_cc -v 1.0 -c '{"Args":["init"]}"
+docker exec -e "CORE_PEER_LOCALMSPID=Org1MSP" -e "CORE_PEER_ADDRESS=peer0.org1.rgbproject.com:7051" -e "CORE_PEER_MSPCONFIGPATH=/etc/hyperledger/msp/users/Admin@org1.rgbproject.com/msp" peer0.org1.rgbproject.com peer chaincode instantiate -o orderer.rgbproject.com:7050 -C channelrc -n rc_cc -v 1.0 -c '{"Args":["init"]}'
 sleep 10
 docker exec -e "CORE_PEER_LOCALMSPID=Org1MSP" -e "CORE_PEER_ADDRESS=peer0.org1.rgbproject.com:7051" -e "CORE_PEER_MSPCONFIGPATH=/opt/gopath/src/github.com/hyperledger/fabric/peer/crypto/peerOrganizations/org1.rgbproject.com/users/Admin@org1.rgbproject.com/msp" cli peer chaincode invoke -o orderer.rgbproject.com:7050 -C channelrc -n rc_cc -c '{"Args":["init_wallet", "admin", "admin", "2018-12-27"]}'
 
